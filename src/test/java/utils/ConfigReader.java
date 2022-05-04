@@ -8,6 +8,7 @@ import java.util.Properties;
 public class ConfigReader {
 
     static Properties prop;
+
     public static Properties readProperties(String filePath){
 
 
