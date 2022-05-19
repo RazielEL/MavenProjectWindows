@@ -57,3 +57,7 @@ Scenario Outline: Adding multiple employees
       |Armin    |Jean        |Alert   |
       |Connie   |Reiner        |Springer|
 
+    @excel
+    Scenario: Adding multiple employees from excel file
+      When user adds multiple employees from excel file using "EmployeeData" sheet and verify the user added
+
