@@ -8,7 +8,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import pages.EmpDetPage;
 import utils.CommonMethods;
-import utils.Constans;
+import utils.Constants;
+import utils.DBUtils;
 import utils.ExcelReader;
 
 import java.util.Iterator;
@@ -16,6 +17,10 @@ import java.util.List;
 import java.util.Map;
 
 public class AddEmployeeSteps extends CommonMethods {
+
+    String empiD, firstName;
+    String dbFirstName;
+    String dbEmpId;
 
     @When("user clicks on PIM option")
     public void user_clicks_on_pim_option() {
@@ -90,7 +95,7 @@ public class AddEmployeeSteps extends CommonMethods {
     @When("user adds multiple employees from excel file using {string} sheet and verify the user added")
     public void user_adds_multiple_employees_from_excel_file_using_sheet_and_verify_the_user_added(String sheetName) throws InterruptedException {
 
-       List<Map<String, String>> newEmployess = ExcelReader.excelIntoMap(Constans.TESTDATA_FILEPATH, sheetName);
+       List<Map<String, String>> newEmployess = ExcelReader.excelIntoMap(Constants.TESTDATA_FILEPATH, sheetName);
         Iterator<Map<String,String>> itr = newEmployess.iterator();
         // it checks whether the next element exists or not
         while (itr.hasNext()){
@@ -137,5 +142,30 @@ public class AddEmployeeSteps extends CommonMethods {
 
     }
 
+    @And("user grabs the employee id")
+    public void userGrabsTheEmployeeId() {
+        empiD = addEmployeePage.empIdLocator.getAttribute("value");
+        firstName = addEmployeePage.firstNameField.getAttribute("value");
+    }
+
+    @And("user query the database for same employee id")
+    public void userQueryTheDatabaseForSameEmployeeId() {
+
+        String query = "select * from hs_hr_employees where employee_id= '"+empiD+"'";
+        dbFirstName = DBUtils.getDataFromDB(query).get(0).get("emp_firstname");
+        dbEmpId = DBUtils.getDataFromDB(query).get(0).get("employee_id");
 
     }
+
+    @Then("user verifies the results")
+    public void userVerifiesTheResults() {
+        System.out.println("First name from Front end" + firstName);
+        System.out.println("First name from Front end" + dbFirstName);
+        Assert.assertEquals(firstName,dbFirstName);
+        Assert.assertEquals(empiD, dbEmpId);
+    }
+}
+
+
+
+

@@ -20,7 +20,7 @@ public class CommonMethods extends PageInitializers {
     public static WebDriver driver;
 
     public void openBrowserAndLaunchApplication() {
-        ConfigReader.readProperties(Constans.CONFIGURATION_FILEPATH);
+        ConfigReader.readProperties(Constants.CONFIGURATION_FILEPATH);
         switch (ConfigReader.getPropertyValue("browser")) {
             case "chrome":
                 WebDriverManager.chromedriver().setup();
@@ -35,7 +35,7 @@ public class CommonMethods extends PageInitializers {
         }
         driver.get(ConfigReader.getPropertyValue("url"));
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Constans.IMPLICIT_WAIT, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(Constants.IMPLICIT_WAIT, TimeUnit.SECONDS);
         initializePageObjects();
     }
 
@@ -45,7 +45,7 @@ public class CommonMethods extends PageInitializers {
     }
 
     public static WebDriverWait getWait() {
-        WebDriverWait wait = new WebDriverWait(driver, Constans.EXPLICIT_WAIT);
+        WebDriverWait wait = new WebDriverWait(driver, Constants.EXPLICIT_WAIT);
         return wait;
     }
 
@@ -82,7 +82,7 @@ public class CommonMethods extends PageInitializers {
         File sourceFile = ts.getScreenshotAs(OutputType.FILE);
 
         try {
-            FileUtils.copyFile(sourceFile, new File(Constans.SCREENSHOT_FILEPATH + fileName + " " + getTimeStamp("yyy-MM-dd-HH-mm-ss") +".png"));
+            FileUtils.copyFile(sourceFile, new File(Constants.SCREENSHOT_FILEPATH + fileName + " " + getTimeStamp("yyy-MM-dd-HH-mm-ss") +".png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
